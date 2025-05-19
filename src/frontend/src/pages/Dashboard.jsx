@@ -1,10 +1,9 @@
-const Dashboard = () => {
+import React from "react";
+
+export default function Dashboard() {
   return (
-    <div className="p-6 text-center">
-      <h1 className="text-3xl font-bold">Welcome to the Dashboard</h1>
-      <p className="mt-2 text-gray-600">This is a protected page.</p>
+    <div className="text-center mt-10">
+      <h1 className="text-3xl">Welcome to the Dashboard</h1>
     </div>
   );
-};
-
-export default Dashboard;
+}

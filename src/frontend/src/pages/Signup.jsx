@@ -1,21 +1,30 @@
-import AuthForm from '../components/AuthForm';
-import { register } from '../api';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import AuthForm from "../components/AuthForm";
+import { register } from "../api";
 
-const Signup = () => {
+export default function Signup() {
   const navigate = useNavigate();
 
-  const handleSignup = async (form) => {
+  const handleSignup = async (email, password) => {
     try {
-      await register(form);
-      navigate('/dashboard');
+      await register(email, password);
+      alert("Signup successful. Please login.");
+      navigate("/login");
     } catch (err) {
-      alert('Signup failed');
-      console.error(err);
+      alert("Signup failed");
     }
   };
 
-  return <AuthForm type="signup" onSubmit={handleSignup} />;
-};
-
-export default Signup;
+  return (
+    <>
+      <AuthForm onSubmit={handleSignup} title="Signup" />
+      <p className="text-center mt-4">
+        Already have an account?{" "}
+        <button className="text-blue-500" onClick={() => navigate("/login")}>
+          Login
+        </button>
+      </p>
+    </>
+  );
+}

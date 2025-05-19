@@ -1,21 +1,30 @@
-import AuthForm from '../components/AuthForm';
-import { login } from '../api';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import AuthForm from "../components/AuthForm";
+import { login } from "../api";
 
-const Login = () => {
+export default function Login() {
   const navigate = useNavigate();
 
-  const handleLogin = async (form) => {
+  const handleLogin = async (email, password) => {
     try {
-      await login(form);
-      navigate('/dashboard');
+      const res = await login(email, password);
+      localStorage.setItem("token", res.access_token);
+      navigate("/dashboard");
     } catch (err) {
-      alert('Login failed');
-      console.error(err);
+      alert("Login failed");
     }
   };
 
-  return <AuthForm type="login" onSubmit={handleLogin} />;
-};
-
-export default Login;
+  return (
+    <>
+      <AuthForm onSubmit={handleLogin} title="Login" />
+      <p className="text-center mt-4">
+        Don't have an account?{" "}
+        <button className="text-blue-500" onClick={() => navigate("/signup")}>
+          Signup
+        </button>
+      </p>
+    </>
+  );
+}

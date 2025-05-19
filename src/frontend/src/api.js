@@ -1,9 +1,22 @@
-import axios from 'axios';
+const API_BASE = "http://localhost:8000";
 
-const API = axios.create({
-  baseURL: 'http://localhost:8000', // change if needed
-  withCredentials: true,
-});
+export async function register(email, password) {
+  const res = await fetch(`${API_BASE}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error("Registration failed");
+  return res.json();
+}
 
-export const register = (data) => API.post('/register', data);
-export const login = (data) => API.post('/login', data);
+export async function login(email, password) {
+  const res = await fetch(`${API_BASE}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error("Login failed");
+  return res.json();
+}
+
