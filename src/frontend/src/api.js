@@ -29,7 +29,7 @@ export async function saveAgents(agentList) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({ agents: agentList }),
+    body: JSON.stringify(agentList),
   });
   if (!res.ok) throw new Error("Saving agents failed");
   return res.json();

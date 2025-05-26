@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { saveAgents, getAgents } from "../api";
 
 const placeholderImage =
-  "https://cdn-icons-png.flaticon.com/512/149/149071.png"; // Generic user icon
+  "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
 const NAME_MAX = 50;
 const DESC_MAX = 1000;
 
-const CreateAgents = () => {
-  const navigate = useNavigate();
+const CreateAgents = ({ onNext }) => {
   const [agents, setAgents] = useState([
     { name: "", character: "" },
     { name: "", character: "" },
@@ -20,7 +18,6 @@ const CreateAgents = () => {
   const [error, setError] = useState("");
 
   const handleChange = (index, field, value) => {
-    // Enforce max lengths
     if (field === "name" && value.length > NAME_MAX) return;
     if (field === "character" && value.length > DESC_MAX) return;
 
@@ -121,7 +118,7 @@ const CreateAgents = () => {
 
         {saved && (
           <button
-            onClick={() => navigate("/start")}
+            onClick={onNext} // call the parent's handler to switch tab
             className="ml-4 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
           >
             Next

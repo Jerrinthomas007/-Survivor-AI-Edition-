@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from .. import models, schemas, auth
 from ..database import SessionLocal
@@ -25,9 +26,12 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-@router.post("/login", response_model=schemas.UserOut)
+@router.post("/login")
 def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if not db_user or not auth.verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=400, detail="Invalid email or password")
-    return db_user
+
+    # For now, token is just the email (not safe for prod)
+    token = db_user.email
+    return JSONResponse(content={"access_token": token, "token_type": "bearer"})
